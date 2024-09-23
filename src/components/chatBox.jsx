@@ -31,18 +31,22 @@ export default function ChatBox({isOpen}) {
 
       };
 
+      const receiveMessage = ({ Message , name }) => {
+        addMessageToChat({ Message , name },massengerDispatch);
+       };
     
       useEffect(() => {
     
        // if (!Socket.connected) return;
-        Socket.on("Message", ({ Message , name }) => {
-          addMessageToChat({ Message , name },massengerDispatch);
-          console.log(Message,name)
-        });
+        Socket.on("Message", receiveMessage);
     
-        Socket.on("PrivetMessage", ({ Message , name }) => {
-          addMessageToChat({ Message , name },massengerDispatch);
-        });
+        // Socket.on("PrivetMessage", ({ Message , name }) => {
+        //   addMessageToChat({ Message , name },massengerDispatch);
+        // });
+
+        // return ()=>{
+        //    Socket.off("Message",receiveMessage);
+        // }
     
       }, []);
 

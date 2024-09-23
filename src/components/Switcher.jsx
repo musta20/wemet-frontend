@@ -15,7 +15,7 @@ export default function Switcher() {
   };
 
   useEffect(() => {
-    
+ 
     connectToServer();
     Socket.off('connect').on('connect',()=>{
       navigate("/meet/" + location?.state?.roomName, {

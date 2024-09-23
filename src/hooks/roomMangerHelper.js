@@ -28,6 +28,8 @@ export const useRoomManger = (startStreming) => {
 	const { Room } = useParams();
 
 	useEffect(() => {
+		//console.log('%cROOM MANGGER USE EFFECT', 'color: #00ff00; font-weight: bold; font-size: 16px;');
+
 		setRoomName(Room, roomDispatch);
 		if(!navigate?.state?.userName && !navigate?.state?.IsViewer )
 		{
@@ -35,9 +37,13 @@ export const useRoomManger = (startStreming) => {
 
 		}
 		if (Socket && !navigate?.state?.IsViewer && navigate?.state?.userName) {
-			console.log(navigate?.state?.userName)
-			StartUserCamra(navigate?.state?.userName);
+ 			StartUserCamra(navigate?.state?.userName);
 		}
+
+		// return ()=>{
+		// 	setRoomName(null, roomDispatch);
+		// }
+
 	}, []);
 
 	const handleUsernameSubmit = (name) => {
@@ -118,8 +124,7 @@ export const useRoomManger = (startStreming) => {
 			"CreateStream",
 			FullRoomName,
 			({ status, rtpCapabilities, BossId, room, First }) => {
-				console.log({ status, rtpCapabilities, BossId, room });
-
+ 
 				if (!status) {
 					//if status came with wrong result and rtpCapabilities
 					// that mean you just gone watch  the room

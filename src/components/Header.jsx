@@ -14,7 +14,6 @@ export default function Header() {
 
   const goToLobby = () => {
     // Disconnect the socket
-    
     // Navigate to the root (lobby)
     navigate('/');
   };

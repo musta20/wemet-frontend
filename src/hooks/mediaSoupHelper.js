@@ -45,51 +45,39 @@ export const useMediaSoupHelper = () => {
      clint will receive his stream via producerId and socketId is his socket id
      */
 
-    Socket.off("new-producer").on(
-      "new-producer",
-      async ({ producerId, socketId, name }) => {
-        signalNewConsumerTransport(producerId, socketId , name);
-      }
-    );
+    Socket.on("new-producer",newProducer);
 
     /*
       this event triggered when user close his stream you should close
       the connection to prevent memory leak
     */
-
  
-    Socket.off("producer-closed").on("producer-closed", async ({ remoteProducerId, socketId }) => {
-      
-      //find the specific transport and close it
-  
-      try {
-        const producerToClose = consumerTransports.find(
-          (transportData) => transportData.producerId === remoteProducerId
-        );
-        if (producerToClose){  producerToClose.consumerTransport.close();}
-        if (producerToClose){ producerToClose.consumer.close();}
-      } catch (e) {
-        console.error(e);
-      }
-    // remove the consumer transport from the list
-      
-     // console.log(consumerTransports.length)
-      let ConsumerTransports = [
-        ...consumerTransports.filter(
-          (transportData) => transportData.producerId !== remoteProducerId
-        ),
-      ];
-     // console.log(consumerTransports.length)
-
-      addConsumerTransport(ConsumerTransports, mediaSoupDispatch);
-      // setConsumerTransports(ConsumerTransports);
-      // hide the video div element
-      completeSession(socketId);
-    });
+    Socket.on("producer-closed",closeProducer);
 
 
 
   };
+
+  const unSetMediaSoupListner = () => {
+
+    /*
+     This event new-prouducer trigred when a new user is joined the room and
+     clint will receive his stream via producerId and socketId is his socket id
+     */
+
+    Socket.off("new-producer",newProducer);
+
+    /*
+      this event triggered when user close his stream you should close
+      the connection to prevent memory leak
+    */
+ 
+    Socket.off("producer-closed",closeProducer);
+
+
+
+  };
+
   const completeSession = (id) => {
  
 
@@ -138,6 +126,38 @@ export const useMediaSoupHelper = () => {
       if (error.name === "UnsupportedError")
         console.warn("browser not supported");
     }
+  };
+
+  const newProducer =   async ({ producerId, socketId, name }) => {
+    signalNewConsumerTransport(producerId, socketId , name);
+  }
+  const closeProducer =  async ({ remoteProducerId, socketId }) => {
+      
+    //find the specific transport and close it
+
+    try {
+      const producerToClose = consumerTransports.find(
+        (transportData) => transportData.producerId === remoteProducerId
+      );
+      if (producerToClose){  producerToClose.consumerTransport.close();}
+      if (producerToClose){ producerToClose.consumer.close();}
+    } catch (e) {
+      console.error(e);
+    }
+  // remove the consumer transport from the list
+    
+   // console.log(consumerTransports.length)
+    let ConsumerTransports = [
+      ...consumerTransports.filter(
+        (transportData) => transportData.producerId !== remoteProducerId
+      ),
+    ];
+   // console.log(consumerTransports.length)
+
+    addConsumerTransport(ConsumerTransports, mediaSoupDispatch);
+    // setConsumerTransports(ConsumerTransports);
+    // hide the video div element
+    completeSession(socketId);
   };
 
   /*
@@ -296,7 +316,7 @@ export const useMediaSoupHelper = () => {
   //this function will get all
   // current producer from the server and counsume them
   const getProducers = () => {
-    console.log("getProducers")
+
     Socket.emit(
       "getProducers",
       {
@@ -305,8 +325,7 @@ export const useMediaSoupHelper = () => {
       },
       (producerIds) => {
         // for each of the producer create a consumer
-    console.log(producerIds)
-        
+         
         producerIds.forEach(
           (
             producer 
@@ -460,6 +479,8 @@ export const useMediaSoupHelper = () => {
   };
 
   useEffect(() => {
+    ///console.log('%cMEDIASOUPHELPER USE EFFECT', 'color: #00ff00; font-weight: bold; font-size: 16px;');
+
     // console.log("USE EFFECT THIS BELOGN TO MEDIA SOUP HOOK");
     //if the user is not viewer create send transport
 
@@ -491,8 +512,15 @@ export const useMediaSoupHelper = () => {
         });
       }
     }
+
+    // return ()=>{
+
+    //   unSetMediaSoupListner
+    // }
+
   }, [device, isAudience, params, producerTransport]);
 
+  
   useEffect(() => {
 
   }, []);

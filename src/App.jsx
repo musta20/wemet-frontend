@@ -107,6 +107,7 @@ const [massengerstate, massengerDispatch] = useReducer(
 );
 
 const restAllState =()=>{
+  
   restRoomState(initialMainRoomProps,roomDispatch);
   restChatState(initialMassengerProps,massengerDispatch);
   restMediaSoupState(initialMediaSoupProps,mediaSoupDispatch);
@@ -121,11 +122,12 @@ const restAllState =()=>{
   mediaSoupDispatch,
   restAllState
 };
- 
-useEffect(  () => {
-   
-  if (!Socket.connected)  Socket.connect();
-}, []);
+ useEffect(()=>{
+  if (!Socket.connected) Socket.connect();
+
+  return ()=>Socket.disconnect();
+ },[]);
+
 return (
     <AppContext.Provider value={MainRoomContex}>
     <SocketContext.Provider value={Socket}>

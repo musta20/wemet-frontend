@@ -10,8 +10,14 @@ export default function Lobby() {
     const [Rooms, setRooms] = useState([]);
   
     const Socket = useContext(SocketContext);
-  
+ 
     useEffect(() => {
+      
+      if (!Socket.connected) Socket.connect();
+
+      //console.log('%c  LOBBY USE EFFECT', 'color: #00ff00; font-weight: bold; font-size: 16px;');
+
+
       //This event delete a room from the list
       Socket.off("DelteRoom").on("DelteRoom", ({ TheroomName }) => {
         let copyRooms = [...Rooms];
@@ -28,8 +34,18 @@ export default function Lobby() {
   
         setRooms(copyRoom);
       });
+
+    //   //Request the current live room in the server
+    //   Socket.emit("getroom", "mainrrom", (data) => {
+    //     setRooms(data);
+    //  });
+
+  //   Socket.emit("getroom", "mainrrom", (data) => {
+  //     setRooms(data);
+  //  });
+ 
     }, [Rooms, Socket]);
-  
+
     useEffect(() => {
   
       //Request the current live room in the server
@@ -38,6 +54,9 @@ export default function Lobby() {
          setRooms(data);
       });
     }, [Socket]);
+
+  
+ 
 
 
 

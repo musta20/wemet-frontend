@@ -44,29 +44,37 @@ export default function MainVideoCard() {
 
     let data = CanvasImg.current.toDataURL("image/png", 0.1);
 
-    Socket.emit("saveimg", data, (data) => {
+    Socket.volatile.emit("saveimg", data, (data) => {
     //  console.log(data)
     });
 
-    //let reternde = guestList.findIndex((item) => item.id == 0);
+    // Clear the canvas after drawing the image
   };
 
   useEffect(() => {
+ 
     if (userMediaTrack && !guestList[0].feed.current.srcObject)
       {
         guestList[0].feed.current.srcObject = userMediaTrack;
       
       }
 
-      // if(Socket?.data?.name){
-      //   setUserName(Socket.data.name)
-      // }
+
+      //return ()=>guestList[0].feed.current.srcObject = null;
 
   }, [userMediaTrack,guestList]);
 
   useEffect(() => {
+    //console.log('%cTakeThumbnailImage USE EFFECT', 'color: #00ff00; font-weight: bold; font-size: 16px;');
+
     TakeThumbnailImage()
-  }, [adminId , isPlay,TakeThumbnailImage]);
+
+    // return ()=>{    
+    //   context.clearRect(0, 0, CanvasImg.current.width, CanvasImg.current.height);
+    
+    // }
+
+  }, [adminId , isPlay, TakeThumbnailImage]);
 
   const handleEndCall = () => {
     // Add any cleanup logic here (e.g., closing video streams, leaving the room, etc.)

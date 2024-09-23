@@ -31,6 +31,9 @@ export default function Meet() {
   
  
   useEffect(() => {
+
+   // console.log('%cMEET USE EFFECT', 'color: #00ff00; font-weight: bold; font-size: 16px;');
+
     if (
       (userMediaTrack || location?.state?.IsViewer) &&
       !adminId &&
@@ -40,6 +43,8 @@ export default function Meet() {
     }
     // console.log( (userMediaTrack || location?.state?.IsViewer), adminId, Socket === Socket)
   //   CreateOrJoinTheRoom();
+  //return () => Unmount();
+ 
   }, [userMediaTrack, adminId, Socket]);
 
   useEffect(() => {
