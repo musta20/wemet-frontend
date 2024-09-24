@@ -31,26 +31,43 @@ jobs:
           npm run build
 
       - name: Setup SSH connection to VPS
-        uses: appleboy/ssh-action@v0.1.7
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
-          known_hosts: ${{ secrets.KNOWN_HOSTS }}
-          strict: false
+          source: "wemetServer"
+          target: ${{ secrets.VPS_DIR }}/wemetServer
 
-      - name: Copy wemetServer to VPS
-        run: |
-          scp -r wemetServer ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer
+      - name: Setup SSH connection to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
+          source: "wemet-frontend/dist"
+          target: ${{ secrets.VPS_DIR }}/wemetServer
 
-      - name: Copy React build to VPS
-        run: |
-          scp -r wemet-frontend/dist ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer/ 
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.VPS_DIR }} && npm install && pm2 restart wemet
+     # - name: Copy wemetServer to VPS
+     #   run: |
+     #     scp -r wemetServer ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer
 
-      - name: Install dependencies and restart server on VPS
-        run: |
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
-            cd ${{ secrets.VPS_DIR }}/wemetServer &&
-            npm install &&
-            pm2 restart wemetServer || pm2 start index.js --name wemetServer
-          "
+     # - name: Copy React build to VPS
+     #   run: |
+     #     scp -r wemet-frontend/dist ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer/ 
+
+     # - name: Install dependencies and restart server on VPS
+     #   run: |
+     #     ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+     #       cd ${{ secrets.VPS_DIR }}/wemetServer &&
+     #       npm install &&
+     #       pm2 restart wemetServer || pm2 start index.js --name wemetServer
+     #     "
