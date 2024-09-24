@@ -36,6 +36,8 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          strict: false
 
       - name: Copy wemetServer to VPS
         run: |
