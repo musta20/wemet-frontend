@@ -27,7 +27,6 @@ jobs:
 
       - name: Build React app
         run: |
-          cd wemet-frontend
           npm install
           npm run build
 
