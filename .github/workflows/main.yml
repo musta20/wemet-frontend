@@ -4,52 +4,52 @@ on:
   push:
     branches:
       - production
-  pull_request:
-    branches:
-      - production
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout frontend repository
-      uses: actions/checkout@v2
-      with:
-        repository: musta20/wemet-frontend
-        ref: production
+      - name: Checkout wemet-frontend repo
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '20'
+      - name: Checkout wemetServer repo
+        uses: actions/checkout@v3
+        with:
+          repository: musta20/wemetServer
+          ref: upgrade-and-refactor
+          path: wemetServer
 
-    - name: Install dependencies
-      run: |
-        npm ci
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' 
 
-    - name: Build frontend
-      run: |
-        npm run build
+      - name: Build React app
+        run: |
+          cd wemet-frontend
+          npm install
+          npm run build
 
-    - name: Checkout backend repository
-      uses: actions/checkout@v2
-      with:
-        repository: musta20/wemetServer
-        ref: upgrade-and-refactor
-        path: wemetServer
+      - name: Setup SSH connection to VPS
+        uses: appleboy/ssh-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
 
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.VPS_HOST }}
-        username: ${{ secrets.VPS_USERNAME }}
-        key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
-        port: 22 # Adjust if needed
-        script: |
-          ls -la
-          cd ${{ secrets.VPS_DIR }}
-          scp -r wemetServer/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}
-          scp -r wemet-frontend/dist/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}
-          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cd ${{ secrets.VPS_DIR }} && npm install && pm2 restart wemet"
+      - name: Copy wemetServer to VPS
+        run: |
+          scp -r wemetServer ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer
+
+      - name: Copy React build to VPS
+        run: |
+          scp -r wemet-frontend/dist ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer/ 
+
+      - name: Install dependencies and restart server on VPS
+        run: |
+          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "
+            cd ${{ secrets.VPS_DIR }}/wemetServer &&
+            npm install &&
+            pm2 restart wemetServer || pm2 start index.js --name wemetServer
+          "
