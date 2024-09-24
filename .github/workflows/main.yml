@@ -30,7 +30,7 @@ jobs:
           npm install
           npm run build
 
-      - name: Setup SSH connection to VPS
+      - name: COPY WEMETSERVER REPO TO VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -39,7 +39,7 @@ jobs:
           source: "wemetServer"
           target: ${{ secrets.VPS_DIR }}/wemetServer
 
-      - name: Setup SSH connection to VPS
+      - name: COPY DIST SERVER REPO TO VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
