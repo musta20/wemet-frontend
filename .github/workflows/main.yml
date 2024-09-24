@@ -4,20 +4,15 @@ on:
   push:
     branches:
       - production
-    paths:
-      - 'wemet-frontend/**'
-
-  workflow_dispatch:
-    inputs:
-      deploy_message:
-        description: 'Deployment message'
-        required: true
-        default: 'Manual deployment'
+  pull_request:
+    branches:
+      - production
 
 jobs:
+
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout frontend repository
       uses: actions/checkout@v2
@@ -45,18 +40,14 @@ jobs:
         ref: upgrade-and-refactor
         path: wemetServer
 
-    - name: Install SSH Key
-      uses: shimataro/ssh-key-action@v2
-      with:
-        key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
-        known_hosts: ${{ secrets.VPS_KNOWN_HOSTS }}
-
     - name: Deploy to VPS
-      env:
-        HOST: ${{ secrets.VPS_HOST }}
-        USER: ${{ secrets.VPS_USERNAME }}
-        DIR: ${{ secrets.VPS_DIR }}
-      run: |
-        scp -r wemetServer/* ${USER}@${HOST}:${DIR}
-        scp -r wemet-frontend/dist/* ${USER}@${HOST}:${DIR}
-        ssh ${USER}@${HOST} "cd ${DIR} && npm install && pm2 restart wemet"
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
+        script: |
+          cd ${{ secrets.VPS_DIR }}
+          scp -r wemetServer/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}
+          scp -r wemet-frontend/dist/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}
+          ssh ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }} "cd ${{ secrets.VPS_DIR }} && npm install && pm2 restart wemet"
