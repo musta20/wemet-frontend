@@ -1,4 +1,4 @@
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState } from 'react';
 import { IoIosOptions } from "react-icons/io";
 import { BsMicMute, BsMic } from "react-icons/bs";
 import { MdOutlinePrivacyTip } from "react-icons/md";

@@ -1,4 +1,3 @@
-import video from '../assets/_Wife_ Amy Rose.mp4';
 import { ImPhoneHangUp } from "react-icons/im";
 import { BsMicMute, BsMic } from "react-icons/bs";
 import { FaVideoSlash, FaVideo } from "react-icons/fa";
@@ -6,10 +5,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { AppContext } from '../contextApi/Contexts/AppContext';
 import { SocketContext } from '../contextApi/Contexts/socket';
 import { useNavigate } from 'react-router-dom';
-import { CiUser } from "react-icons/ci";
-import { IoIosOptions } from "react-icons/io";
-import { MdOutlinePrivacyTip } from "react-icons/md";
-import { FaBan } from "react-icons/fa";
+
 
 export default function MainVideoCard() {
 

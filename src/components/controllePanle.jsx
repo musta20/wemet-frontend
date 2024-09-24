@@ -8,7 +8,6 @@ import { BiMessageSquareDetail } from "react-icons/bi";
 
 import SwitchToggle from "./switchToogle";
 import { SocketContext } from '../contextApi/Contexts/socket';
-import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../contextApi/Contexts/AppContext';
 import { HiddeTheRoom, isRoomPublic, isRoomStream } from '../contextApi/Actions/roomHelperAction';
 
