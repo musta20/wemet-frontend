@@ -30,12 +30,10 @@ jobs:
 
     - name: Install dependencies
       run: |
-        cd wemet-frontend
         npm ci
 
     - name: Build frontend
       run: |
-        cd wemet-frontend
         npm run build
 
     - name: Checkout backend repository
