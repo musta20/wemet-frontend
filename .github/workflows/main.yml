@@ -8,14 +8,16 @@ on:
       - 'wemet-frontend/**'
 
   workflow_dispatch:
-      inputs:
-        deploy_message:
-          description: 'Deployment message'
-          required: true
-          default: 'Manual deployment'
+    inputs:
+      deploy_message:
+        description: 'Deployment message'
+        required: true
+        default: 'Manual deployment'
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
     - name: Checkout frontend repository
       uses: actions/checkout@v2
@@ -43,14 +45,18 @@ jobs:
         ref: upgrade-and-refactor
         path: wemetServer
 
+    - name: Install SSH Key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
+        known_hosts: ${{ secrets.VPS_KNOWN_HOSTS }}
+
     - name: Deploy to VPS
       env:
-        PRIVATE_KEY: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
         HOST: ${{ secrets.VPS_HOST }}
         USER: ${{ secrets.VPS_USERNAME }}
         DIR: ${{ secrets.VPS_DIR }}
       run: |
-        echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
-        scp -i private_key -r wemetServer/* ${USER}@${HOST}:${DIR}
-        scp -i private_key -r wemet-frontend/dist/* ${USER}@${HOST}:${DIR}
-        ssh -i private_key ${USER}@${HOST} "cd ${DIR} && npm install && pm2 restart wemet"
+        scp -r wemetServer/* ${USER}@${HOST}:${DIR}
+        scp -r wemet-frontend/dist/* ${USER}@${HOST}:${DIR}
+        ssh ${USER}@${HOST} "cd ${DIR} && npm install && pm2 restart wemet"
