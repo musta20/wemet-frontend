@@ -48,6 +48,7 @@ jobs:
         key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
         port: 22 # Adjust if needed
         script: |
+          ls -la
           cd ${{ secrets.VPS_DIR }}
           scp -r wemetServer/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}
           scp -r wemet-frontend/dist/* ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}
