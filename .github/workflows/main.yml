@@ -45,7 +45,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
-          source: "wemet-frontend/dist"
+          source: "./dist"
           target: ${{ secrets.VPS_DIR }}/wemetServer
 
       - name: Deploy to VPS
