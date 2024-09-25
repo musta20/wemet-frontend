@@ -37,7 +37,7 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
           source: "wemetServer"
-          target: ${{ secrets.VPS_DIR }}/wemetServer
+          target: ${{ secrets.VPS_DIR }}
 
       - name: COPY DIST SERVER REPO TO VPS
         uses: appleboy/scp-action@v0.1.7
@@ -48,15 +48,15 @@ jobs:
           source: "./dist"
           target: ${{ secrets.VPS_DIR }}/wemetServer
 
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USERNAME }}
-          key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
-          script: |
-            cd ${{ secrets.VPS_DIR }}
-            pm2 restart wemet
+      # - name: Deploy to VPS
+      #   uses: appleboy/ssh-action@master
+      #   with:
+      #     host: ${{ secrets.VPS_HOST }}
+      #     username: ${{ secrets.VPS_USERNAME }}
+      #     key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
+      #     script: |
+      #       cd ${{ secrets.VPS_DIR }}
+      #       pm2 restart wemet
      # - name: Copy wemetServer to VPS
      #   run: |
      #     scp -r wemetServer ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer
