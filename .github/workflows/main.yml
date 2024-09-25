@@ -55,7 +55,8 @@ jobs:
           username: ${{ secrets.VPS_USERNAME }}
           key: ${{ secrets.VPS_DIGITALOCIAN_PRIVATE_KEY }}
           script: |
-            cd ${{ secrets.VPS_DIR }} && npm install && pm2 restart wemet
+            cd ${{ secrets.VPS_DIR }}
+            pm2 restart wemet
      # - name: Copy wemetServer to VPS
      #   run: |
      #     scp -r wemetServer ${{ secrets.VPS_USERNAME }}@${{ secrets.VPS_HOST }}:${{ secrets.VPS_DIR }}/wemetServer
