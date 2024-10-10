@@ -1,15 +1,15 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { FcHome, FcWebcam } from "react-icons/fc";
 // ... existing Header component code ...   
 import Model from './Model';
-import { SocketContext } from "../contextApi/Contexts/socket";
+//import { SocketContext } from "../contextApi/Contexts/socket";
 
 export default function Header() {
 
   const [isModelOpen, setIsModelOpen] = useState(false);
-  const Socket = useContext(SocketContext);
+  //const Socket = useContext(SocketContext);
   const navigate = useNavigate();
 
   const goToLobby = () => {

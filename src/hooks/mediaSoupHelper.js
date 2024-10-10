@@ -521,9 +521,9 @@ export const useMediaSoupHelper = () => {
   }, [device, isAudience, params, producerTransport]);
 
   
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, []);
+  // }, []);
 
   return {
     Unmount,

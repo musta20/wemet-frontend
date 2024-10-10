@@ -24,7 +24,7 @@ export default function VideoCard({ source, isControl }) {
     };
 
     return (
-        <div className={`w-full rounded-xl overflow-hidden relative ${source.id === 0 ? 'hidden' : ''}`}>
+        <div className={`w-1/3 rounded-xl overflow-hidden relative ${source.id === 0 ? 'hidden' : ''}`}>
             <span className='text-white text-md font-semibold absolute top-4 left-4 z-10 bg-black bg-opacity-50 p-2 rounded-xl'>{source.name}</span>
    
             <video 
@@ -37,7 +37,7 @@ export default function VideoCard({ source, isControl }) {
             <div className='absolute top-4 right-4 z-10'>
                 <button 
                     onClick={() => setIsMenuOpen(!isMenuOpen)}
-                    className='flex items-center hover:scale-105 transition-all duration-300 text-white rounded-full bg-[#0AA1DD] p-3 gap-2'
+                    className='flex items-center hover:scale-105 transition-all duration-300 text-white rounded-full bg-[#0AA1DD] p-1 gap-2'
                 >
                     <IoIosOptions size={24} />
                 </button>

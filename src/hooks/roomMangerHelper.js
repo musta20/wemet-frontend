@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { useLocation, useParams } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { AppContext } from "../../src/contextApi/Contexts/AppContext";
 import { setParam } from "../../src/contextApi/Actions/mediaSoupAction";
 import {
@@ -20,7 +20,8 @@ export const useRoomManger = (startStreming) => {
 	const [showUsernameModal, setShowUsernameModal] = useState(false);
 	const [username, setUsername] = useState('');
 
-	const navigate = useLocation();
+	const navigate = useNavigate();
+	const location = useLocation();
 	const { mediaSoupstate, mediaSoupDispatch, roomState, roomDispatch } = useContext(AppContext);
 	const { guestList } = roomState;
 	const { params } = mediaSoupstate;
@@ -28,28 +29,34 @@ export const useRoomManger = (startStreming) => {
 	const { Room } = useParams();
 
 	useEffect(() => {
-		//console.log('%cROOM MANGGER USE EFFECT', 'color: #00ff00; font-weight: bold; font-size: 16px;');
-
 		setRoomName(Room, roomDispatch);
-		if(!navigate?.state?.userName && !navigate?.state?.IsViewer )
-		{
+		
+		if(!location.state?.userName && !location.state?.IsViewer) {
 			setShowUsernameModal(true);
-
 		}
-		if (Socket && !navigate?.state?.IsViewer && navigate?.state?.userName) {
- 			StartUserCamra(navigate?.state?.userName);
+		
+		if (Socket && !location.state?.IsViewer && location.state?.userName) {
+			StartUserCamra(location.state.userName);
 		}
 
-		// return ()=>{
-		// 	setRoomName(null, roomDispatch);
-		// }
+		Socket.on('disconnect', handleDisconnect);
 
+		return () => {
+			Socket.off('disconnect', handleDisconnect);
+		}
 	}, []);
+
+	const handleDisconnect = () => {
+		showTost("Connection lost. Redirecting to home page in 10 seconds...", "warning");
+        setTimeout(() => {
+            navigate('/');
+        }, 10000);
+	};
 
 	const handleUsernameSubmit = (name) => {
 		setUsername(name);
 		setShowUsernameModal(false);
-		if (Socket && !navigate?.state?.IsViewer) {
+		if (Socket && !location.state?.IsViewer) {
 			StartUserCamra(name);
 		}
 	};
@@ -97,19 +104,18 @@ export const useRoomManger = (startStreming) => {
 		let IsPublic = true;
 		let IsViewer = false;
 
-		if (navigate?.state?.IsViewer) {
-
+		if (location.state?.IsViewer) {
 			setIsAudience(true, roomDispatch);
 			IsViewer = true;
 			
 		}
 
-		if (!navigate?.state?.IsPublic) {
+		if (!location.state?.IsPublic) {
 			isRoomPublic(false, roomDispatch);
 			IsPublic = false;
 		}
 
-		const userName = navigate?.state?.userName || guestList[0].name;
+		const userName = location.state?.userName || guestList[0].name;
 
 		//create room name it this way to add mor info in in the room name
 		const FullRoomName = {
