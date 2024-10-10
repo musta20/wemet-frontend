@@ -1,6 +1,7 @@
 import React, { useEffect, useReducer, useRef } from "react";
 //  import Body from "../src/pages/body"
 import Meet from "./pages/Meet";
+import About from "./pages/About";
 import Switcher from "./components/Switcher";
 import Footer from "./components/Footer";
 //  import Terms from "../src/pages/Terms"
@@ -22,6 +23,7 @@ import Header from "./components/Header";
 import Lobby from "./pages/Lobby";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import ContactUs from "./pages/Contact";
 
 function App() {
   
@@ -151,6 +153,9 @@ return (
               <Route path="/" element={<Lobby />}></Route>
               <Route path="meet/:Room" element={<Meet />}></Route>
               <Route path="Switcher/" element={<Switcher />}></Route>
+              <Route path="About/" element={<About />}></Route>
+              <Route path="ContactUs/" element={<ContactUs />}></Route>
+              
               {/* <Route path="Terms/" element={<Terms />}></Route>
               <Route path="Privacy/" element={<Privacy />}></Route>
               <Route path="Guidelines/" element={<Guidelines />}></Route> */}

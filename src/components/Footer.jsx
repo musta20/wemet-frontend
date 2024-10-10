@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaFacebookF, FaTwitter, FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import logo from '../assets/logo.png';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
@@ -18,17 +19,16 @@ export default function Footer() {
 
           {/* Quick links */}
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            {/* <h3 className="text-lg font-semibold mb-4">Quick Links</h3> */}
             <ul>
-              <li><a href="#" className="hover:text-[#055777] transition-colors duration-300">Home</a></li>
-              <li><a href="#" className="hover:text-[#055777] transition-colors duration-300">About Us</a></li>
-              <li><a href="#" className="hover:text-[#055777] transition-colors duration-300">Services</a></li>
-              <li><a href="#" className="hover:text-[#055777] transition-colors duration-300">Contact</a></li>
+              <li><Link to={"/"}   className="hover:text-[#055777] transition-colors duration-300">Home</Link></li>
+              <li><Link  to={"/About"} className="hover:text-[#055777] transition-colors duration-300">About Us</Link></li>
+              <li><Link  to={"/ContactUs"} className="hover:text-[#055777] transition-colors duration-300">Contact</Link></li>
             </ul>
           </div>
 
           {/* Social media links */}
-          <div className="w-full md:w-1/3">
+          {/* <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
             <div className="flex space-x-4">
               <a href="#" className="hover:text-[#055777] transition-colors duration-300"><FaFacebookF size={24} /></a>
@@ -36,7 +36,7 @@ export default function Footer() {
               <a href="#" className="hover:text-[#055777] transition-colors duration-300"><FaInstagram size={24} /></a>
               <a href="#" className="hover:text-[#055777] transition-colors duration-300"><FaLinkedinIn size={24} /></a>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </footer>

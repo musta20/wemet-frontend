@@ -114,7 +114,7 @@ export default function MainVideoCard() {
       ></canvas>
     
     
-    <div className={`w-full h-[40rem] rounded-xl overflow-hidden relative  bg-black`}>
+    <div className={`w-full h-full rounded-xl overflow-hidden relative  bg-black`}>
       <span className='text-white text-2xl font-bold absolute top-4 left-4 z-10 bg-black bg-opacity-50 p-2 rounded-xl'>{guestList[0].name}</span>
 
 
@@ -123,7 +123,7 @@ export default function MainVideoCard() {
         ref={guestList[0].feed}
        onPlay={()=>setIsPlay(true)}
 
-      autoPlay muted={isCameraOff} className='w-full h-full object-cover rounded-xl' />
+      autoPlay muted={isCameraOff} className='w-full h-full mx-auto object-cover rounded-xl' />
 
     {Socket.id == guestList[0].id && (
       <div className='absolute bottom-0 left-0 w-full h-1/6 bg-black bg-opacity-50'>

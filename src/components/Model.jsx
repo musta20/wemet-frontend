@@ -38,6 +38,7 @@ export default function Model ({ isOpen, setIsModelOpen }){
             IsViewer: false,
           },
         });
+        
         setIsModelOpen(false); // Close the modal after navigation
       }
     };

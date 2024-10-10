@@ -4,19 +4,26 @@ import { useNavigate } from 'react-router-dom';
 const UsernameModal = ({ onSubmit }) => {
 
   const [username, setUsername] = useState('');
-
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
 
     e.preventDefault();
     
-    if (username.trim()) {
-
-      onSubmit(username.trim());
-
+    // Username validation
+    const trimmedUsername = username.trim();
+    if (trimmedUsername.length < 3 || trimmedUsername.length > 20) {
+      setError('Username must be between 3 and 20 characters');
+      return;
+    }
+    if (!/^[a-zA-Z0-9_]+$/.test(trimmedUsername)) {
+      setError('Username can only contain letters, numbers, and underscores');
+      return;
     }
 
+    setError('');
+    onSubmit(trimmedUsername);
   };
 
   return (
@@ -32,27 +39,20 @@ const UsernameModal = ({ onSubmit }) => {
             placeholder="Your username"
             required
           />
+          {error && <p className="text-red-500 mb-4">{error}</p>}
           <div className='flex gap-5'>
-
-          <a
-            
-            onClick={()=>{
-               navigate('/')
-            }}
-            className="w-full  bg-[#df4a4a]  hover:bg-[#ca7a6f] text-white font-bold py-2 px-4 rounded"
-          >
-            cancel
-          </a>
-
-
-
-          <button
-            type="submit"
-            className="w-full  bg-[#055777]  hover:bg-[#6fb0ca] text-white font-bold py-2 px-4 rounded"
-          >
-            Join Room
-          </button>
- 
+            <a
+              onClick={() => navigate('/')}
+              className="w-full bg-[#df4a4a] hover:bg-[#ca7a6f] text-white font-bold py-2 px-4 rounded cursor-pointer"
+            >
+              Cancel
+            </a>
+            <button
+              type="submit"
+              className="w-full bg-[#055777] hover:bg-[#6fb0ca] text-white font-bold py-2 px-4 rounded"
+            >
+              Join Room
+            </button>
           </div>
         </form>
       </div>

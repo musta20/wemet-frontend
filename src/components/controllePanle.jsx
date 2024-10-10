@@ -11,7 +11,7 @@ import { SocketContext } from '../contextApi/Contexts/socket';
 import { AppContext } from '../contextApi/Contexts/AppContext';
 import { HiddeTheRoom, isRoomPublic, isRoomStream } from '../contextApi/Actions/roomHelperAction';
 
-export default function ControllePanle({isChatBoxOpen, setIsChatBoxOpen}) {
+export default function ControllePanle({isChatBoxOpen, setIsChatBoxOpen , hasNewMessage}) {
   
   const [showSettings, setShowSettings] = useState(false);
 
@@ -57,8 +57,16 @@ export default function ControllePanle({isChatBoxOpen, setIsChatBoxOpen}) {
         <span className="p-3 rounded-xl bg-[#AEE8FF] font-bold">{activeGuestsCount}</span>
       </div>
       <div className='flex gap-5' >
-      <button onClick={() => setIsChatBoxOpen(!isChatBoxOpen)} className="flex text-[#69696F]  hover:bg-gray-100 items-center rounded-xl border border-[#dddddd] bg-white p-4 gap-5">
+
+      <button onClick={() => setIsChatBoxOpen(!isChatBoxOpen)} className="flex text-[#69696F] relative hover:bg-gray-100 items-center rounded-xl border border-[#dddddd] bg-white p-4 gap-5">
+
           <BiMessageSquareDetail size={24} />
+
+          {hasNewMessage && !isChatBoxOpen && (<span className="flex absolute top-0 end-0 size-3 -mt-0.5 -me-0.5">
+    <span className="animate-ping absolute inline-flex size-full rounded-full bg-red-400 opacity-75 dark:bg-red-600"></span>
+    <span className="relative inline-flex rounded-full size-3 bg-red-500"></span>
+  </span>
+				)}
         </button>
       </div>
       </div>
@@ -109,8 +117,13 @@ export default function ControllePanle({isChatBoxOpen, setIsChatBoxOpen}) {
           <GiSettingsKnobs size={24} />
         </button>
       </div>
-      <button onClick={() => setIsChatBoxOpen(!isChatBoxOpen)} className="flex text-[#69696F]  hover:bg-gray-100 items-center rounded-xl border border-[#dddddd] bg-white p-4 gap-5">
+      <button onClick={() => setIsChatBoxOpen(!isChatBoxOpen)} className="flex text-[#69696F]  relative hover:bg-gray-100 items-center rounded-xl border border-[#dddddd] bg-white p-4 gap-5">
           <BiMessageSquareDetail size={24} />
+          {hasNewMessage && !isChatBoxOpen && (<span className="flex absolute top-0 end-0 size-3 -mt-0.5 -me-0.5">
+                      <span className="animate-ping absolute inline-flex size-full rounded-full bg-red-400 opacity-75 dark:bg-red-600"></span>
+                      <span className="relative inline-flex rounded-full size-3 bg-red-500"></span>
+                    </span>
+				              )}
         </button>
       </div>
     </div>
