@@ -71,7 +71,7 @@ export default function Meet() {
           <VideoCard   source={guestList[3]}  isControl={Socket.id == adminId} />
     
         </div>
-      <div className='flex justify-center items-center gap-5' >
+      <div className='flex flex-col xl:flex-row justify-center items-center gap-5 p-2 ' >
     
       <MainVideoCard  />
       <ChatBox isOpen={isChatBoxOpen}   />

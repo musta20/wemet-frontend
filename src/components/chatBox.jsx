@@ -52,7 +52,7 @@ export default function ChatBox({isOpen}) {
 
 
   return (
-    <div  className={`w-5/12 min-h-[40rem]   rounded-xl border border-[#055777] flex flex-col justify-between bg-[#F1F7F9] ${isOpen ? ' block' : ' hidden'}`} >
+    <div  className={`w-full xl:w-5/12 min-h-[40rem]   rounded-xl border border-[#055777] flex flex-col justify-between bg-[#F1F7F9] ${isOpen ? ' block' : ' hidden'}`} >
         <div className="h-10 bg-[#055777] text-white flex items-center justify-center rounded-t-xl text-xl font-bold" >Group Chat</div>
         <div className='flex flex-col min-h-[30rem] max-h-[30rem] border gap-5 p-5 overflow-y-scroll' >
  

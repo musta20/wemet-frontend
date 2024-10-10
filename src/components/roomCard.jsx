@@ -5,7 +5,7 @@ export default function RoomCard({room ,GoToCallRoomWatch , join}) {
         <div className="bg-white w-64 h-44 hover:scale-105 transition-all duration-300 rounded-lg shadow-md p-4 relative overflow-hidden">
             <div 
                 className="absolute inset-0 bg-cover bg-center z-0 "
-                style={{backgroundImage: `url('http://localhost:6800/imges/${room}.png')`}}
+                style={{backgroundImage: `url('${import.meta.env.VITE_REACT_APP_BACKE_END_URL}/imges/${room}.png')`}}
             ></div>
             <div className="relative z-10">
                 <h2 className="text-md  font-semibold bg-black bg-opacity-50 p-3 w-1/2 rounded-md text-gray-100">{room}</h2>
